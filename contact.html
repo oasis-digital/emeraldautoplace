@@ -449,7 +449,7 @@ Service Area
                         <form id="contactForm" class="review-form ajax-contact">
                             <div class="row gx-24">
                                 <div class="form-group style-white2 col-md-6">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter Your Name">
+                                    <input type="text" class="form-control" name="from_name" id="from_name" placeholder="Enter Your Name">
                                     <i class="fal fa-user"></i>
                                 </div>
                                 <div class="form-group style-white2 col-md-6">
@@ -470,31 +470,36 @@ Service Area
                                     <i class="fal fa-comment"></i>
                                 </div>
                                 <div class="form-btn col-12 mt-10">
-                                    <button id="" type="submit" class="as-btn style4">Send your review</button>
+                                    <button id="button" type="submit" class="as-btn style4">Send your review</button>
                                 </div>
                             </div>
                             <p class="form-messages mb-0 mt-3"></p>
                         </form>
 
                         <script>
-                            document.getElementById("contactForm").addEventListener("submit", function (event)
-                            {
-                                event.preventDefault();
+                            const btn = document.getElementById('button');
 
-                                emailjs.send("service_o1h2kc5", "template_jhcthul", {
-                                    name: document.getElementById("name").value,
-                                    email: document.getElementById("email").value,
-                                    subject: document.getElementById("subject").value,
-                                    message: document.getElementById("message").value,
-                                }).then(function ()
-                                {
-                                    alert("Message sent successfully!");
-                                }, function (error)
-                                {
-                                    
-                                    alert("Failed to send message. Please try again later.");
-                                });
-                            });
+                                document.getElementById('contactForm')
+                                    .addEventListener('submit', function (event)
+                                    {
+                                        event.preventDefault();
+
+                                        btn.value = 'Sending...';
+
+                                        const serviceID = 'service_o1h2kc5';
+                                        const templateID = 'template_jeo100n';
+
+                                        emailjs.sendForm(serviceID, templateID, this)
+                                            .then(() =>
+                                            {
+                                                btn.value = 'Send Email';
+                                                alert('Message Sent!');
+                                            }, (err) =>
+                                            {
+                                                btn.value = 'Send Email';
+                                                alert(JSON.stringify(err));
+                                            });
+                                    });
                         </script>
 
 
